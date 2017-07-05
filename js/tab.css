@@ -1,0 +1,197 @@
+/*==tab begine============================================*/
+.tab_container {
+  width: 59.375em;
+  padding-left: 0em;
+  padding-right: 0em;
+}
+
+ul.tab {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  clear: both;
+  margin-top: 0.5625em;
+  margin-bottom: 0px;
+  top: 0px;
+}
+ul.tab li {
+  display: block;
+  float: left;
+  position: relative;
+  top: 0px;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  font-family: "Microsoft JhengHei", Verdana, Arial;
+  font-size: 1.4175em;
+  background-color: none;
+  border: 1px solid none;
+  border-bottom: 0px;
+  background-color: none;
+  border: 1px solid none;
+  border-bottom: 0px;
+  margin-left: none;
+  background-image: url("../images/tab_li.png");
+  padding-left: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0em;
+  height: 82px;
+}
+ul.tab li a:link, ul.tab li a:visited {
+  color: #fefffd;
+  text-decoration: none;
+}
+ul.tab li a:hover, ul.tab li a:active {
+  text-decoration: none;
+  color: #fefffd;
+}
+ul.tab li a {
+  padding-left: 0px;
+  padding-right: 0px;
+  line-height: 2.5;
+  padding-top: 0.28125em;
+  padding-bottom: 0.28125em;
+  display: inline-block;
+  height: auto;
+  width: 475px;
+  display: inline-block;
+  text-align: center;
+}
+ul.tab li.selectedTab {
+  position: relative;
+  line-height: normal;
+  top: 0px;
+  background-color: none;
+  background-image: url("../images/tab_selected.png");
+  border: 1px solid none;
+  border-bottom: 0px;
+  background-position: 0px 0em;
+}
+ul.tab li.selectedTab a:link, ul.tab li.selectedTab a:visited, ul.tab li.selectedTab a:hover, ul.tab li.selectedTab a:active {
+  color: #fefffd;
+  cursor: pointer;
+  height: auto;
+}
+ul.tab + .panel_container {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+}
+
+/*==tab end============================================*/
+/*== tab content==*/
+.panel_container {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+}
+.panel_container table {
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  font-family: Verdana, Arial;
+  font-size: 0.945rem;
+  border-collapse: separate;
+  border-spacing: 1em;
+  width: 100%;
+}
+.panel_container table:first-child {
+  border-bottom: 1px dotted #7c7e66;
+}
+.panel_container table td:first-child {
+  font-weight: bold;
+  width: 18%;
+  text-align: right;
+}
+.panel_container table td > label {
+  line-height: 2;
+}
+.panel_container table + table td {
+  color: #4a7820;
+  font-size: 13px;
+}
+.panel_container table + table td:first-child {
+  width: 10%;
+  vertical-align: top;
+}
+.panel_container table + table td + td input[type="text"] {
+  background-color: #e4e4e2;
+  border-radius: 5px;
+  color: #705512;
+  padding: 2px 8px;
+  border: 0px;
+  height: 36px;
+  width: 655px;
+}
+.panel_container table + table td span {
+  color: #f6513d;
+}
+.panel_container .textarea_block {
+  background-color: #f9f9f9;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  padding: 0.9375em 1.6875em 1.6875em 1.6875em;
+  width: 790px;
+  margin-top: 1em;
+  margin-left: 6em;
+}
+.panel_container .textarea_block dl {
+  border-bottom: 1px dotted #7c7e66;
+}
+.panel_container .textarea_block dt, .panel_container .textarea_block dd {
+  float: left;
+  font-weight: bold;
+  color: #333333;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  font-family: Verdana, Arial;
+  font-size: 0.945rem;
+  padding: 15px 0px;
+}
+.panel_container .textarea_block dt {
+  width: 90px;
+}
+.panel_container .textarea_block dd {
+  width: 600px;
+}
+.panel_container .textarea_block .index_accordion dl {
+  border: 0px;
+}
+.panel_container .textarea_block .index_accordion dt {
+  padding: 15px 0px;
+}
+.panel_container .textarea_block .index_accordion dd {
+  padding: 0px 0px;
+}
+.panel_container .textarea_block .index_accordion dt, .panel_container .textarea_block .index_accordion dd {
+  float: none;
+  font-weight: bold;
+  color: #333333;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  font-family: Verdana, Arial;
+  font-size: 0.945rem;
+}
+.panel_container .textarea_block .index_accordion dt {
+  width: 100%;
+  cursor: pointer;
+  background: url("./icon_close.png") no-repeat 105px 19px;
+}
+.panel_container .textarea_block .index_accordion dt.ui-accordion-header-active {
+  background: url("./icon_open.png") no-repeat 105px 19px;
+  cursor: pointer;
+}
+.panel_container .textarea_block .index_accordion dd {
+  width: 100%;
+  margin-top: 0.625em;
+}
+.panel_container .textarea_block .index_accordion textarea {
+  width: 100%;
+}
+
+/*==end tab content==*/
+ul.tab li a {
+  width: 450px\9;
+}
+
+*::-ms-backdrop, ul.tab li a {
+  width: 450px;
+}

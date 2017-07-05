@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Speech to text</title>
+<link rel="stylesheet" href="./js/resetcss.css">
+<link rel="stylesheet" href="./js/tab.css">
+<link rel="stylesheet" href="./js/layout.css">
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/recorder.js"></script>
+<script src="./js/display_func.js"></script>
+<script type="text/javascript" src="./js/jquery-ui.js"></script>
+<script type="text/javascript" src="./js/jquery.miscellaneous.js"></script>
+<script src="./js/display_func.js"></script>
+
+<style>
+  * {
+    font-family: Verdana, Arial, sans-serif;
+  }
+  a:link {
+    color:#000;
+    text-decoration: none;
+  }
+  a:visited {
+    color:#000;
+  }
+  a:hover {
+    color:#33F;
+  }
+  .button {
+    background: -webkit-linear-gradient(top,#008dfd 0,#0370ea 100%);
+    border: 1px solid #076bd2;
+    border-radius: 3px;
+    color: #fff;
+    display: none;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.3;
+    padding: 8px 25px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #076bd2;
+    letter-spacing: normal;
+  }
+  .center {
+    padding: 10px;
+    text-align: center;
+  }
+  .final {
+    color: black;
+    padding-right: 3px;
+  }
+  .interim {
+    color: gray;
+  }
+  .info {
+    font-size: 14px;
+    text-align: center;
+    color: #777;
+    display: none;
+  }
+  .right {
+    float: right;
+  }
+  .sidebyside {
+    display: inline-block;
+    width: 45%;
+    min-height: 40px;
+    text-align: left;
+    vertical-align: top;
+  }
+  #headline {
+    font-size: 40px;
+    font-weight: 300;
+  }
+  #info {
+    font-size: 20px;
+    text-align: center;
+    color: #777;
+    visibility: hidden;
+  }
+  #results {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    min-height: 150px;
+  }
+  #start_button {
+    border: 0;
+    background-color:transparent;
+    padding: 0;
+  }
+</style>
+<h1 class="center" id="headline">Speech to text Demonstration</h1>
+<div id="info">
+  <p id="info_start">Click on the microphone icon and begin speaking.</p>
+  <p id="info_speak_now">Speak now.</p>
+  <p id="info_no_speech">No speech was detected. You may need to adjust your
+    <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+      microphone settings</a>.</p>
+  <p id="info_no_microphone" style="display:none">
+    No microphone was found. Ensure that a microphone is installed and that
+    <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+    microphone settings</a> are configured correctly.</p>
+  <p id="info_allow">Click the "Allow" button above to enable your microphone.</p>
+  <p id="info_denied">Permission to use microphone was denied.</p>
+  <p id="info_blocked">Permission to use microphone is blocked. To change,
+    go to chrome://settings/contentExceptions#media-stream</p>
+    <?php include ("./passfile.php"); ?>
+
+</div>
+<div class="panel_container" style="">
+<div id="tab02" class="active-content-div" style="display: block; position: static; visibility: visible;">
+<table id="recArea" name="recArea">
+    <tbody><tr>
+        <td width="100px">
+            <img id="record_btn" name="record_btn" src="mic.gif" width="px" alt="record" onclick=" rec_btn('record_btn','time','recordingslist','recodRadio','for_record_output','backstatus2','outputword2');" style="cursor:pointer;">
+        </td>
+        <td>
+            <div style="background-color: #f2f2f2; padding: 5px;  border-radius:5px;" id="recordingslist"></div>
+          </td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><span>*</span>此功能僅支援PC/MAC版本之Chrome、Opera、FireFox瀏覽器!</td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><span>*</span>錄音時間不能超過10秒(點選[錄音]開始錄音，再次點選錄音停止) : <span id="time" name="time">0</span></td>
+      </tr>
+  </tbody></table>
+
+<div class="textarea_block" id="recText" name="recText">
+    <dl>
+        <dt>輸出文字</dt>
+        <dd id="outputword2" name="outputword2">-</dd>
+    </dl>
+    <dl>
+        <dt>回傳狀態</dt>
+        <dd id="backstatus2" name="backstatus2">-</dd>
+                        </dl>
+    <div class="index_accordion ui-accordion ui-widget ui-helper-reset ui-sortable" role="tablist">
+        <dl>
+            <dt class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons ui-sortable-handle" role="tab" id="ui-id-3" aria-controls="ui-id-4" aria-selected="true" aria-expanded="true" tabindex="0"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>輸出JSON</dt>
+            <dd class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active" id="ui-id-4" aria-labelledby="ui-id-3" role="tabpanel" aria-hidden="false" style="display: block;">
+                <textarea rows="25" cols="50" id="for_record_output" name="for_record_output">                            </textarea>
+            </dd>
+        </dl>
+    </div>
+    <!--end index_accordion-->
+</div>
+</div>
+</div>
+<style type="text/css">
+.sec_con {
+    margin: auto;
+}
+</style>
+<style type="text/css">
+div {
+list-style: none;
+}
+
+#recordingslist audio {
+display: block;
+margin-bottom: 10px;
+width: 80%;
+}
+
+#recordingslist {
+width: 100%;
+height: 115px;
+}
+
+#recordingslist:after {
+content: '';
+margin-bottom: 10px;
+display: inline-block;
+height: 90px;
+width: px;
+}
+
+#recordingslist div {
+display: inline-block;
+width: 1.76px;
+background: #a00;
+margin: 0 0 90px 1.04px;
+vertical-align: middle;
+box-shadow: 5px 10px 10px rgba(191, 191, 191, 1);
+}
+</style>
+<script type="text/javascript">
+function detectBrowser() {
+    var sAgent = navigator.userAgent.toLowerCase();
+    this.isIE = (sAgent.indexOf("msie") != -1); //IE6.0-7
+    this.isFF = (sAgent.indexOf("firefox") != -1); //firefox
+    this.isSa = (sAgent.indexOf("safari") != -1); //safari
+    this.isOp = (sAgent.indexOf("opera") != -1); //opera
+    this.isNN = (sAgent.indexOf("netscape") != -1); //netscape
+    this.isCh = (sAgent.indexOf("chrome") != -1); //chrome
+    this.isMa = this.isIE; //marthon
+    this.isOther = (!this.isIE && !this.isFF && !this.isSa && !this.isOp && !this.isNN && !this.isSa);
+}
+$(document).ready(function() {
+
+
+
+    var d = document.getElementById('recordingslist');
+    d.innerHTML = "";
+    for (var i = 0; i < 256; i++) {
+        d.innerHTML += '<div></div>';
+    }
+    var dd = document.querySelectorAll('#recordingslist div');
+    for (var j = 0; j < 256; j++) {
+        dd[j].style.height = 1 + 'px';
+        //dd[j].style.height = (dataArray[j] == 0) ? 1 + 'px' : Math.round(dataArray[j] * 1.45 / 3) + 'px';
+        dd[j].style.background = 'rgba(' + (255 - j) + ',' + j + ',0,1)';
+        dd[j].style.background = '-webkit-linear-gradient(bottom ,rgba(0,0,0,0.5),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(255,255,255,1))';
+        dd[j].style.background = '-o-linear-gradient(bottom ,rgba(0,0,0,0.5),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(255,255,255,1))';
+        dd[j].style.background = '-moz-linear-gradient(bottom ,rgba(0,0,0,0.5),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(255,255,255,1))';
+        dd[j].style.background = 'linear-gradientt(bottom ,rgba(0,0,0,0.5),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(' + (255 - j) + ',' + j + ',0,1),rgba(255,255,255,1))';
+    }
+
+    var data = document.getElementById('for_record_output');
+
+
+    //測試Time的class
+    $("#time_push").click(function() {
+        $.post("https://stt.itri.org.tw/time/TimeIndex.php", {
+                json_data: data.innerHTML
+            },
+            function(returndata, status) {
+                //alert("Data: " + data + "\nStatus: " + status);
+                document.getElementById('showTime').innerHTML = returndata;
+            });
+    });
+});
+</script>
+<script>
+var oBrowser = new detectBrowser();
+var recAreaObj = document.getElementById('recArea');
+var recRadixObj = document.getElementById('recRadix');
+var recTextObj = document.getElementById('recText');
+var tryObj = document.getElementById('try');
+var recordingslistObj = document.getElementById('recordingslist');
+
+if (oBrowser.isIE) {
+    recRadixObj.innerHTML = "<table id='recRadix' name='recRadix'><tr><td><font size='4px'></font></td><td><b><font size='4px'>抱歉! 此功能暫不支援您的瀏覽器!</font></b></td></tr></table>";
+    recAreaObj.innerHTML = "<table id='recArea' name='recArea'><tr><td></td><td><div ></div></td></tr><tr><td></td><td><span>*</span>此功能僅支援Chrome、Opera瀏覽器!</td></tr><tr><td></td><td></td></tr></table>";
+    recordingslistObj.style.display = "none";
+    recTextObj.style.display = "none";
+} else if (oBrowser.isSa && !oBrowser.isCh) {
+
+}
+/*
+else if(oBrowser.isFF){ //firfox 瀏覽器阻擋 即時錄音
+    recRadixObj.innerHTML = "<table id='recRadix' name='recRadix'><tr><td><font size='4px'></font></td><td><b><font size='4px'>抱歉! 此功能暫不支援您的瀏覽器!</font></b></td></tr></table>";
+    recAreaObj.innerHTML = "<table id='recArea' name='recArea'><tr><td></td><td><div ></div></td></tr><tr><td></td><td><span>*</span>此功能僅支援Chrome、Opera瀏覽器!</td></tr><tr><td></td><td></td></tr></table>";
+    recordingslistObj.style.display = "none";
+    recTextObj.style.display = "none";
+} */
+else if (oBrowser.isOp) {} else if (oBrowser.isCh && oBrowser.isSa) {} else if (oBrowser.isFF) {
+    recAreaObj.innerHTML = "<table id='recArea' name='recArea'><tr><td><img id='record_btn' name='record_btn' src='../images/record.png' width='200px'  alt='record' onclick=" + "\"" + "rec_btn('record_btn','time','recordingslist','ts0','ts1','ts2','for_record_output','backstatus2','outputword2');" + "\"" + " style='cursor:pointer;' /></td><td><div style='background-color: #f2f2f2; padding: 5px;  border-radius:5px;' id='recordingslist'></div></td></tr><tr><td></td><td><span>*</span>此功能僅支援Chrome、Opera、FireFox瀏覽器!</td></tr><tr><td></td><td><span>*</span>若無反應請重新整理頁面!</td></tr><tr><td></td><td><span>*</span>錄音時間不能超過10秒 : <span id='time' name='time'>0</span></td></tr></table>";
+    //recAreaObj.innerHTML+="<tr><td><span>*</span>若無反應請重新整理頁面!</td></tr>";
+} else {
+    recRadixObj.innerHTML = "<table id='recRadix' name='recRadix'><tr><td><font size='4px'></font></td><td><b><font size='4px'>抱歉! 此功能暫不支援您的瀏覽器!</font></b></td></tr></table>";
+    recAreaObj.innerHTML = "<table id='recArea' name='recArea'><tr><td></td><td><div></div></td></tr><tr><td></td><td><span>*</span>此功能僅支援Chrome、Opera瀏覽器!</td></tr><tr><td></td><td></td></tr></table>";
+    recordingslistObj.style.display = "none";
+    recTextObj.style.display = "none";
+}
+</script>
+<script>
+
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+var start_timestamp;
+
+window.onload = function init() {
+  try {
+    // webkit shim
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    window.URL = window.URL || window.webkitURL;
+
+    audio_context = new AudioContext;
+
+  } catch (e) {
+    showInfo('info_denied');
+  }
+
+  navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
+    showInfo('info_no_speech');
+  });
+};
+
+
+
+  function recognizing() {
+
+  var req = new XMLHttpRequest();
+  req.open("POST", "http://stt.itri.org.tw/STTService/v1/stt/useSTT/{server defined taskName}", true);
+  req.setRequestHeader("Authorization", "a9d43ae7061ee72aaa23bc8c0244b578");
+  req.setRequestHeader("rate", "16000");
+  req.setRequestHeader("Accept", "application/json");
+  req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+  req.onreadystatechange = function() {
+      if (this.readyState === 4) {
+          req.onreadystatechange = null;
+          if (this.status === 200) {
+              var result = JSON.parse(this.response);
+              return result.sents[0].sents;;
+          }
+          else {
+              alert(this.statusText);
+          }
+      }
+  };
+  req.send();
+}
+
+
+function showInfo(s) {
+  if (s) {
+    for (var child = info.firstChild; child; child = child.nextSibling) {
+      if (child.style) {
+        child.style.display = child.id == s ? 'inline' : 'none';
+      }
+    }
+    info.style.visibility = 'visible';
+  } else {
+    info.style.visibility = 'hidden';
+  }
+}
+
+</script>
